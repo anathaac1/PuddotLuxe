@@ -723,6 +723,8 @@ const produkList = [
 
 ];
 
+/* ================= DATA ================= */
+
 let qty = {};
 let keranjang = {};
 
@@ -776,9 +778,12 @@ produkList.map(p => `
     </div>
 
     <button class="btn-order"
-    onclick="beli('${p.nama}')">
+    onclick="beli('${p.nama}')"
+    ${p.stok <= 0 ? 'disabled' : ''}>
 
-      MASUKKAN KE PESANAN
+      ${p.stok <= 0
+      ? 'STOK HABIS'
+      : 'MASUKKAN KE PESANAN'}
 
     </button>
 
@@ -840,13 +845,28 @@ function beli(n){
 
   }
 
+  const produk =
+  produkList.find(p => p.nama === n);
+
+  /* VALIDASI STOK */
+
+  if(qty[n] > produk.stok){
+
+    alert('Stok tidak cukup 😭');
+    return;
+
+  }
+
+  /* MASUK KERANJANG */
+
   keranjang[n] =
   (keranjang[n] || 0) + qty[n];
 
-  qty[n] = 0;
+  /* KURANGI STOK */
 
-  document.getElementById(
-  'qty-'+n).textContent = 0;
+  produk.stok -= qty[n];
+
+  /* UPDATE FORM */
 
   const items =
   Object.entries(keranjang)
@@ -857,6 +877,16 @@ function beli(n){
 
   document.getElementById('jumlah').value =
   items.map(([,q]) => q + ' cup').join(', ');
+
+  /* RESET COUNTER */
+
+  qty[n] = 0;
+
+  /* RENDER ULANG */
+
+  renderMenu();
+
+  /* SCROLL */
 
   document.getElementById('order')
   .scrollIntoView({
@@ -923,6 +953,8 @@ function kirim(){
 
   }
 
+  /* TOTAL */
+
   let totalHarga = 0;
 
   items.forEach(([n,q]) => {
@@ -932,16 +964,12 @@ function kirim(){
     p => p.nama === n
     );
 
-    produk.stok -= q;
-
     totalHarga +=
     produk.hargaNum * q;
 
   });
 
-  renderMenu();
-
-  /* DETAIL PESANAN */
+  /* DETAIL */
 
   const detailPesanan =
   items.map(([n,q]) => {
@@ -955,7 +983,7 @@ function kirim(){
 
   }).join('%0A');
 
-  /* FORMAT WHATSAPP */
+  /* FORMAT WA */
 
   const pesan =
 `Halo Puddot Luxe 🍮%0A%0ANama: ${nama}%0AKelas: ${kelas}%0A%0APesanan:%0A${detailPesanan}%0A%0ATotal: Rp ${totalHarga.toLocaleString('id-ID')}%0A%0AMetode Pembayaran: ${payment === 'cash' ? 'Cash' : 'QRIS GoPay'}%0A%0AMohon konfirmasi ya! 🙏`;
@@ -965,7 +993,7 @@ function kirim(){
 '_blank'
 );
 
-  /* RESET */
+  /* RESET FORM */
 
   keranjang = {};
 
