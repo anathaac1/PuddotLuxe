@@ -1,4 +1,3 @@
-```html id="n4t8vb"
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -291,9 +290,6 @@ nav a:hover{
 
 .btn-order:hover{
   background:#C79A5F;
-
-  box-shadow:
-  0 10px 24px rgba(199,154,95,.25);
 }
 
 /* FORM */
@@ -352,9 +348,6 @@ input[readonly]{
 .btn-send:hover{
   background:#C79A5F;
   transform:translateY(-2px);
-
-  box-shadow:
-  0 10px 24px rgba(199,154,95,.25);
 }
 
 .wa-note{
@@ -363,22 +356,6 @@ input[readonly]{
   font-size:12px;
   color:#8B6450;
   line-height:1.7;
-}
-
-/* REVEAL */
-
-.reveal{
-  opacity:0;
-  transform:translateY(60px);
-
-  transition:
-  opacity .9s ease,
-  transform .9s ease;
-}
-
-.reveal.active{
-  opacity:1;
-  transform:translateY(0);
 }
 
 /* FOOTER */
@@ -430,6 +407,68 @@ footer h3{
 
 }
 
+/* MOBILE RESPONSIVE */
+
+@media(max-width:768px){
+
+  nav{
+    padding:14px 20px;
+  }
+
+  nav h2{
+    font-size:18px;
+  }
+
+  nav a{
+    margin-left:12px;
+    font-size:11px;
+  }
+
+  .hero{
+    padding:0 20px;
+  }
+
+  .hero::after{
+    width:320px;
+    height:320px;
+  }
+
+  .hero-text h1{
+    font-size:54px;
+    line-height:1.1;
+  }
+
+  .hero-text span{
+    font-size:13px;
+    line-height:1.7;
+  }
+
+  .menu{
+    padding:70px 20px;
+  }
+
+  .section-title h2{
+    font-size:32px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .card img{
+    height:220px;
+  }
+
+  .form-box{
+    padding:28px 22px;
+  }
+
+  #qrisBox img{
+    width:190px !important;
+  }
+
+}
+
 </style>
 </head>
 
@@ -475,7 +514,7 @@ footer h3{
 
 <section class="menu" id="menu">
 
-  <div class="section-title reveal">
+  <div class="section-title">
 
     <p>✦ Pilihan Kami ✦</p>
 
@@ -491,7 +530,7 @@ footer h3{
 
 <section class="form-section" id="order">
 
-  <div class="section-title reveal">
+  <div class="section-title">
 
     <p>✦ Konfirmasi ✦</p>
 
@@ -499,34 +538,24 @@ footer h3{
 
   </div>
 
-  <div class="form-box reveal">
+  <div class="form-box">
 
     <label>Nama Lengkap</label>
-
-    <input type="text"
-    id="nama"
+    <input type="text" id="nama"
     placeholder="Masukkan nama pemesan">
 
     <label>Kelas / Jurusan</label>
-
-    <input type="text"
-    id="kelas"
+    <input type="text" id="kelas"
     placeholder="Contoh: XI RPL B">
 
     <hr style="margin:25px 0; opacity:.15;">
 
     <label>Produk Dipilih</label>
-
-    <input type="text"
-    id="produk"
-    placeholder="— tekan 'Masukkan ke Pesanan' di menu —"
+    <input type="text" id="produk"
     readonly>
 
     <label>Jumlah per Rasa</label>
-
-    <input type="text"
-    id="jumlah"
-    placeholder="— bisa pilih lebih dari 1 varian —"
+    <input type="text" id="jumlah"
     readonly>
 
     <!-- PAYMENT -->
@@ -549,28 +578,16 @@ footer h3{
     <div id="qrisBox"
     style="display:none; margin-top:15px; text-align:center;">
 
-      <p style="
-      font-size:13px;
-      color:#8B6450;
-      margin-bottom:10px;
-      ">
+      <p style="font-size:13px; color:#8B6450; margin-bottom:10px;">
         Scan QRIS berikut untuk pembayaran 💳
       </p>
 
       <img src="qris-gopay.jpeg"
-      style="
-      width:220px;
-      border-radius:10px;
-      ">
+      style="width:220px; border-radius:10px;">
 
-      <p style="
-      font-size:12px;
-      color:#8B6450;
-      margin-top:10px;
-      line-height:1.6;
-      ">
-        Bisa dibayar lewat GoPay, DANA,
-        OVO, ShopeePay, dan Mobile Banking ✨
+      <p style="font-size:12px; color:#8B6450; margin-top:10px;">
+        Bisa dibayar lewat GoPay, DANA, OVO,
+        ShopeePay, dan Mobile Banking ✨
       </p>
 
     </div>
@@ -581,13 +598,6 @@ footer h3{
       ✦ KIRIM VIA WHATSAPP ✦
 
     </button>
-
-    <p class="wa-note">
-
-      ✨ Stok terbatas & dapat berubah sewaktu-waktu.<br>
-      Admin akan mengkonfirmasi pesanan melalui WhatsApp ya 💖
-
-    </p>
 
   </div>
 
@@ -655,7 +665,7 @@ produkList.forEach(p => {
 document.getElementById('grid').innerHTML =
 produkList.map(p => `
 
-<div class="card reveal">
+<div class="card">
 
   <img src="${p.img}">
 
@@ -679,17 +689,11 @@ produkList.map(p => `
 
     <div class="counter">
 
-      <button onclick="kurang('${p.nama}')">
-        −
-      </button>
+      <button onclick="kurang('${p.nama}')">−</button>
 
-      <span id="qty-${p.nama}">
-        0
-      </span>
+      <span id="qty-${p.nama}">0</span>
 
-      <button onclick="tambah('${p.nama}')">
-        +
-      </button>
+      <button onclick="tambah('${p.nama}')">+</button>
 
     </div>
 
@@ -773,23 +777,20 @@ function showPayment(){
 function kirim(){
 
   const nama =
-  document.getElementById(
-  'nama').value.trim();
+  document.getElementById('nama').value.trim();
 
   const kelas =
-  document.getElementById(
-  'kelas').value.trim();
+  document.getElementById('kelas').value.trim();
 
   const payment =
-  document.getElementById(
-  'paymentMethod').value;
+  document.getElementById('paymentMethod').value;
 
   const items =
   Object.entries(keranjang);
 
   if(!nama || !kelas){
 
-    alert('Isi nama dan kelas dulu!');
+    alert('Isi nama dan kelas dulu ya!');
     return;
 
   }
@@ -827,8 +828,7 @@ function kirim(){
     p => p.nama === n
     ).hargaNum;
 
-    return
-`• ${n} x${q} = Rp ${(harga*q).toLocaleString('id-ID')}`;
+    return `• ${n} x${q} = Rp ${(harga*q).toLocaleString('id-ID')}`;
 
   }).join('%0A');
 
@@ -842,40 +842,7 @@ function kirim(){
 
 }
 
-// REVEAL ANIMATION
-
-const reveals =
-document.querySelectorAll('.reveal');
-
-window.addEventListener(
-'scroll',
-revealSections
-);
-
-function revealSections(){
-
-  reveals.forEach(el => {
-
-    const windowHeight =
-    window.innerHeight;
-
-    const revealTop =
-    el.getBoundingClientRect().top;
-
-    if(revealTop < windowHeight - 80){
-
-      el.classList.add('active');
-
-    }
-
-  });
-
-}
-
-revealSections();
-
 </script>
 
 </body>
 </html>
-```
