@@ -689,7 +689,7 @@ const produkList = [
   nama:"Mangga",
   harga:"8.000",
   hargaNum:8000,
-  stok:4,
+  stok:7,
   desc:"Rasa mangga segar dengan tekstur lembut dan creamy",
   img:"Mango.jpeg"
 },
@@ -698,7 +698,7 @@ const produkList = [
   nama:"Taro",
   harga:"8.000",
   hargaNum:8000,
-  stok:2,
+  stok:5,
   desc:"Taro manis creamy dan lembut",
   img:"Taro.jpeg"
 },
@@ -840,10 +840,17 @@ function beli(n){
 
   }
 
-  keranjang[n] = qty[n];
+  keranjang[n] =
+  (keranjang[n] || 0) + qty[n];
+
+  qty[n] = 0;
+
+  document.getElementById(
+  'qty-'+n).textContent = 0;
 
   const items =
-  Object.entries(keranjang);
+  Object.entries(keranjang)
+  .filter(([,q]) => q > 0);
 
   document.getElementById('produk').value =
   items.map(([nama]) => nama).join(', ');
@@ -892,7 +899,8 @@ function kirim(){
   'paymentMethod').value;
 
   const items =
-  Object.entries(keranjang);
+  Object.entries(keranjang)
+  .filter(([,q]) => q > 0);
 
   if(!nama || !kelas){
 
