@@ -621,7 +621,7 @@ const produkList = [
   nama:"Mangga",
   harga:"8.000",
   hargaNum:8000,
-  stok:2,
+  stok:7,
   desc:"Rasa mangga segar dengan tekstur lembut dan creamy",
   img:"Mango.jpeg"
 },
@@ -630,7 +630,7 @@ const produkList = [
   nama:"Taro",
   harga:"8.000",
   hargaNum:8000,
-  stok:2,
+  stok:5,
   desc:"Taro manis creamy dan lembut",
   img:"Taro.jpeg"
 },
@@ -639,7 +639,7 @@ const produkList = [
   nama:"Coklat",
   harga:"8.000",
   hargaNum:8000,
-  stok:2,
+  stok:4,
   desc:"Coklat creamy premium",
   img:"Coklat.jpeg"
 },
@@ -661,6 +661,10 @@ let keranjang = {};
 produkList.forEach(p => {
   qty[p.nama] = 0;
 });
+
+/* RENDER MENU */
+
+function renderMenu(){
 
 document.getElementById('grid').innerHTML =
 produkList.map(p => `
@@ -689,11 +693,17 @@ produkList.map(p => `
 
     <div class="counter">
 
-      <button onclick="kurang('${p.nama}')">−</button>
+      <button onclick="kurang('${p.nama}')">
+        −
+      </button>
 
-      <span id="qty-${p.nama}">0</span>
+      <span id="qty-${p.nama}">
+        ${qty[p.nama]}
+      </span>
 
-      <button onclick="tambah('${p.nama}')">+</button>
+      <button onclick="tambah('${p.nama}')">
+        +
+      </button>
 
     </div>
 
@@ -710,14 +720,33 @@ produkList.map(p => `
 
 `).join('');
 
+}
+
+renderMenu();
+
+/* TAMBAH */
+
 function tambah(n){
 
-  qty[n]++;
+  const produk =
+  produkList.find(p => p.nama === n);
 
-  document.getElementById(
-  'qty-'+n).textContent = qty[n];
+  if(qty[n] < produk.stok){
+
+    qty[n]++;
+
+    document.getElementById(
+    'qty-'+n).textContent = qty[n];
+
+  }else{
+
+    alert('Stok tidak cukup 😭');
+
+  }
 
 }
+
+/* KURANG */
 
 function kurang(n){
 
@@ -731,6 +760,8 @@ function kurang(n){
   }
 
 }
+
+/* BELI */
 
 function beli(n){
 
@@ -759,6 +790,8 @@ function beli(n){
 
 }
 
+/* PAYMENT */
+
 function showPayment(){
 
   const method =
@@ -774,16 +807,21 @@ function showPayment(){
 
 }
 
+/* KIRIM */
+
 function kirim(){
 
   const nama =
-  document.getElementById('nama').value.trim();
+  document.getElementById(
+  'nama').value.trim();
 
   const kelas =
-  document.getElementById('kelas').value.trim();
+  document.getElementById(
+  'kelas').value.trim();
 
   const payment =
-  document.getElementById('paymentMethod').value;
+  document.getElementById(
+  'paymentMethod').value;
 
   const items =
   Object.entries(keranjang);
@@ -813,12 +851,19 @@ function kirim(){
 
   items.forEach(([n,q]) => {
 
-    totalHarga +=
+    const produk =
     produkList.find(
     p => p.nama === n
-    ).hargaNum * q;
+    );
+
+    produk.stok -= q;
+
+    totalHarga +=
+    produk.hargaNum * q;
 
   });
+
+  renderMenu();
 
   const detailPesanan =
   items.map(([n,q]) => {
@@ -828,7 +873,8 @@ function kirim(){
     p => p.nama === n
     ).hargaNum;
 
-    return `• ${n} x${q} = Rp ${(harga*q).toLocaleString('id-ID')}`;
+    return
+`• ${n} x${q} = Rp ${(harga*q).toLocaleString('id-ID')}`;
 
   }).join('%0A');
 
@@ -840,7 +886,16 @@ function kirim(){
 '_blank'
 );
 
+  keranjang = {};
+
+  document.getElementById(
+  'produk').value = '';
+
+  document.getElementById(
+  'jumlah').value = '';
+
 }
+
 
 </script>
 
