@@ -730,6 +730,8 @@ produkList.forEach(p => {
   qty[p.nama] = 0;
 });
 
+/* ================= RENDER MENU ================= */
+
 function renderMenu(){
 
 document.getElementById('grid').innerHTML =
@@ -790,6 +792,8 @@ produkList.map(p => `
 
 renderMenu();
 
+/* ================= TAMBAH ================= */
+
 function tambah(n){
 
   const produk =
@@ -810,6 +814,8 @@ function tambah(n){
 
 }
 
+/* ================= KURANG ================= */
+
 function kurang(n){
 
   if(qty[n] > 0){
@@ -822,6 +828,8 @@ function kurang(n){
   }
 
 }
+
+/* ================= BELI ================= */
 
 function beli(n){
 
@@ -838,7 +846,7 @@ function beli(n){
   Object.entries(keranjang);
 
   document.getElementById('produk').value =
-  items.map(([n]) => n).join(', ');
+  items.map(([nama]) => nama).join(', ');
 
   document.getElementById('jumlah').value =
   items.map(([,q]) => q + ' cup').join(', ');
@@ -849,6 +857,8 @@ function beli(n){
   });
 
 }
+
+/* ================= PAYMENT ================= */
 
 function showPayment(){
 
@@ -864,6 +874,8 @@ function showPayment(){
   : 'none';
 
 }
+
+/* ================= KIRIM ================= */
 
 function kirim(){
 
@@ -921,6 +933,8 @@ function kirim(){
 
   renderMenu();
 
+  /* DETAIL PESANAN */
+
   const detailPesanan =
   items.map(([n,q]) => {
 
@@ -929,10 +943,11 @@ function kirim(){
     p => p.nama === n
     ).hargaNum;
 
-    return
-`• ${n} x${q} = Rp ${(harga*q).toLocaleString('id-ID')}`;
+    return `• ${n} x${q} = Rp ${(harga*q).toLocaleString('id-ID')}`;
 
   }).join('%0A');
+
+  /* FORMAT WHATSAPP */
 
   const pesan =
 `Halo Puddot Luxe 🍮%0A%0ANama: ${nama}%0AKelas: ${kelas}%0A%0APesanan:%0A${detailPesanan}%0A%0ATotal: Rp ${totalHarga.toLocaleString('id-ID')}%0A%0AMetode Pembayaran: ${payment === 'cash' ? 'Cash' : 'QRIS GoPay'}%0A%0AMohon konfirmasi ya! 🙏`;
@@ -942,9 +957,18 @@ function kirim(){
 '_blank'
 );
 
+  /* RESET */
+
+  keranjang = {};
+
+  document.getElementById(
+  'produk').value = '';
+
+  document.getElementById(
+  'jumlah').value = '';
+
 }
 
 </script>
-
 </body>
 </html>
